@@ -1,0 +1,25 @@
+name: Build Folder Mapping Window
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Compile C++ Code
+      run: |
+        cl.exe /O2 /Fe:DeskMap.exe main.cpp user32.lib ole32.lib shell32.lib dwmapi.lib gdi32.lib /link /subsystem:windows
+
+    - name: Upload Executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: DeskMap-App
+        path: DeskMap.exe
